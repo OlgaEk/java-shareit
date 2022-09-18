@@ -1,0 +1,17 @@
+package ru.practicum.shareit.item.controller.validator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.*;
+
+@Documented
+@Constraint(validatedBy = ItemIdExistValidator.class)
+@Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ItemIdExist {
+    String message() default "id is null";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
