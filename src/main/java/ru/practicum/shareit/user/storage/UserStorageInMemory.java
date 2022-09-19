@@ -3,14 +3,11 @@ package ru.practicum.shareit.user.storage;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class UserStorageInMemory implements UserStorage {
-    private final HashMap<Long, User> userBase = new HashMap<>();
+    private final Map<Long, User> userBase = new HashMap<>();
     private Long lastAssignedId = 0L;
 
     public User create(User user) {

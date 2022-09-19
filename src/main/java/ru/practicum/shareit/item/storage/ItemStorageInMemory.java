@@ -6,11 +6,12 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class ItemStorageInMemory implements ItemStorage {
-    private final HashMap<Long, Item> itemBase = new HashMap<>();
+    private final Map<Long, Item> itemBase = new HashMap<>();
     private Long lastAssignedId = 0L;
 
     public Item create(Item item) {

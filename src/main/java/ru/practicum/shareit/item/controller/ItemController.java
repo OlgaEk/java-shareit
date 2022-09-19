@@ -7,6 +7,7 @@ import ru.practicum.shareit.item.controller.validator.ItemIdExist;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.validateGroup.Create;
+import ru.practicum.shareit.item.validateGroup.Update;
 import ru.practicum.shareit.user.controller.validator.UserIdExist;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class ItemController {
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@RequestHeader(value = "X-Sharer-User-Id") @UserIdExist Long userId,
                               @PathVariable @ItemIdExist Long itemId,
-                              @Validated @RequestBody ItemDto itemDto) {
+                              @Validated(Update.class) @RequestBody ItemDto itemDto) {
         return itemService.update(userId, itemId, itemDto);
     }
 
