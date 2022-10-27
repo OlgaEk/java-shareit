@@ -17,16 +17,16 @@ public abstract class ItemMapper {
     protected CommentMapper commentMapper;
 
 
-    abstract public ItemDto itemToDto(Item item);
+    public abstract  ItemDto itemToDto(Item item);
 
     @Mapping(target = "lastBooking", expression = "java(bookingService.getLastBooking(item.getId()))")
     @Mapping(target = "nextBooking", expression = "java(bookingService.getNextBooking(item.getId()))")
     @Mapping(target = "comments",
             expression = "java(commentMapper.commentsToDto(commentRepository.findAllByItemId(item.getId())))")
-    abstract public ItemInfoDto itemToInfoDto(Item item);
+    public abstract  ItemInfoDto itemToInfoDto(Item item);
 
 
-    abstract public Item dtoToItem(ItemDto itemDto);
+    public abstract  Item dtoToItem(ItemDto itemDto);
 
 
 }
