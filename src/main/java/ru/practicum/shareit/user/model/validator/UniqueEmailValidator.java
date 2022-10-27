@@ -2,7 +2,7 @@ package ru.practicum.shareit.user.model.validator;
 
 import lombok.RequiredArgsConstructor;
 import ru.practicum.shareit.exception.AlreadyExistException;
-import ru.practicum.shareit.user.storage.UserStorage;
+import ru.practicum.shareit.user.storage.memory.UserStorage;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

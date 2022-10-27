@@ -1,54 +1,64 @@
 package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.AlreadyExistException;
+import ru.practicum.shareit.exception.NoEntityException;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.storage.UserStorage;
+import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
-    private final UserStorage userStorage;
+    private final UserRepository userRepository;
 
+    @Transactional
     public User create(User user) {
-        return userStorage.create(user);
+        try {
+            return userRepository.save(user);
+        } catch (DataIntegrityViolationException ex) {
+            throw new AlreadyExistException("Email " + user.getEmail() + " is already exist");
+        }
     }
 
+    @Transactional
     public void delete(Long id) {
-        userStorage.delete(id);
+        userRepository.deleteById(id);
     }
 
+    @Transactional
     public User update(Long id, User user) {
-        user.setId(id);
-        emailValidation(user);
-        return userStorage.update(user);
+        User userToUpdate = userRepository.findById(id).orElseThrow(() -> new NoEntityException("User not found"));
+        setNewData(user, userToUpdate);
+        try {
+            return userRepository.saveAndFlush(userToUpdate);
+        } catch (DataIntegrityViolationException ex) {
+            throw new AlreadyExistException("Email " + userToUpdate.getEmail() + " is already exist");
+        }
     }
 
     public List<User> getAll() {
-        return userStorage.getAll();
+        return userRepository.findAll();
     }
 
     public User getUser(Long id) {
-        return userStorage.getUserById(id);
+        return userRepository.findById(id).orElseThrow(() -> new NoEntityException("User not found"));
     }
 
-    private void emailValidation(User user) {
-        if (user.getEmail() == null) return;
-        Optional<User> userFromBase = userStorage.getUserByEmail(user.getEmail());
-        if (userFromBase.isEmpty()) return;
-        if (Objects.equals(userFromBase.get().getId(), user.getId())) return;
-        throw new AlreadyExistException("Email " + user.getEmail() + " is already exist");
-    }
-
-    private void setMissingData(User userTo, User userFrom) {
-        if (userTo.getName() == null || userTo.getName().isBlank())
-            userTo.setName(userFrom.getName());
-        if (userTo.getEmail() == null || userTo.getEmail().isBlank())
-            userTo.setEmail(userFrom.getEmail());
+    private void setNewData(User user, User userToUpdate) {
+        if (user.getName() != null) {
+            if (!user.getName().isBlank())
+                userToUpdate.setName(user.getName());
+        }
+        if (user.getEmail() != null) {
+            if (!user.getEmail().isBlank())
+                userToUpdate.setEmail(user.getEmail());
+        }
     }
 }

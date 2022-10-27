@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.storage;
+package ru.practicum.shareit.item.storage.memory;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -29,7 +29,9 @@ public class ItemStorageInMemory implements ItemStorage {
     }
 
     public List<Item> getByUser(Long id) {
-        return itemBase.values().stream().filter(item -> item.getOwnerId().equals(id)).collect(Collectors.toList());
+        return itemBase.values().stream()
+                .filter(item -> item.getOwner().getId().equals(id))
+                .collect(Collectors.toList());
     }
 
     public Item update(ItemDto itemDto) {
@@ -55,7 +57,7 @@ public class ItemStorageInMemory implements ItemStorage {
 
     public List<Item> search(String text) {
         return itemBase.values().stream()
-                .filter(Item::isAvailable)
+                //.filter(Item::getAvailable)
                 .filter(item -> item.getName().toLowerCase().contains(text)
                         || item.getDescription().toLowerCase().contains(text))
                 .collect(Collectors.toList());
