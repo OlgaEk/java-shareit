@@ -24,7 +24,7 @@ public class Item {
     private String description;
     @Column(name = "is_available")
     private boolean available;
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 }

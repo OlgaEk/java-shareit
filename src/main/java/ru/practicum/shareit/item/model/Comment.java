@@ -17,11 +17,11 @@ public class Comment {
     private Long id;
     @Column
     private String text;
-    @ManyToOne
-    @JoinColumn(name = "item_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
     @Column
     private LocalDateTime created;

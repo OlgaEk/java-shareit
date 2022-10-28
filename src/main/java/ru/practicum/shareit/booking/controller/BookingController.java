@@ -5,16 +5,18 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.controller.validator.BookingIdExist;
 import ru.practicum.shareit.booking.controller.validator.StartBeforeEnd;
-import ru.practicum.shareit.booking.validateGroup.Create;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.booking.validateGroup.Create;
 import ru.practicum.shareit.user.controller.validator.UserIdExist;
 
 import java.util.List;
 
+//Заменила на описание класса
+
 /**
- * // TODO .
+ * The class handles the user's request in /bookings".
  */
 @Validated
 @RestController

@@ -120,7 +120,7 @@ public class BookingServiceImpl implements BookingService {
         try {
             return State.valueOf(state.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new NotValidRequestException(String.format("Unknown state: %s", state));
+            throw new NotValidRequestException("Unknown state: " + state);
         }
     }
 
@@ -132,6 +132,13 @@ public class BookingServiceImpl implements BookingService {
                 .filter(b -> b.getEnd().isBefore(LocalDateTime.now()))
                 .sorted(Comparator.comparing(Booking::getEnd).reversed())
                 .collect(Collectors.toList());*/
+
+        //На основе своих знаний, я считаю , что именно База Данных должна выдать готовый результат при запросе данных.
+        // В моем представлении БД обладает функционалом по оптимизации поиска и сортировки.
+        // И запрашивать большой объем и потом самому сортировать и фильтровать
+        // при каждом запросе мне кажется неэффективным.
+        // Но почему-то при выборке из БД мне казалось, что программа медленнее обрабатывала запрос,
+        // нежели при обработке через stream.
 
         List<Booking> booking = bookingRepository.findItemLastBook(itemId, LocalDateTime.now());
         if (booking.isEmpty())
