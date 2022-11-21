@@ -5,6 +5,7 @@ import ru.practicum.shareit.item.validateGroup.Create;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * // This class describes the entity of Item, that returns to users
@@ -23,4 +24,6 @@ public class ItemDto {
 
     @NotNull(message = "The item must have a status", groups = Create.class)
     private Boolean available;
+
+    private List<CommentDto> comments;
 }
