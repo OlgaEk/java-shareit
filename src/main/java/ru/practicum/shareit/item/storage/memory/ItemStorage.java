@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.storage.memory;
 
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemCommentInfoDto;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface ItemStorage {
 
     List<Item> getByUser(Long id);
 
-    Item update(ItemDto itemDto);
+    Item update(ItemCommentInfoDto itemCommentInfoDto);
 
     List<Item> search(String text);
 

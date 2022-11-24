@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.storage.memory;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemCommentInfoDto;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.HashMap;
@@ -34,18 +34,18 @@ public class ItemStorageInMemory implements ItemStorage {
                 .collect(Collectors.toList());
     }
 
-    public Item update(ItemDto itemDto) {
-        Item itemToUpdate = itemBase.get(itemDto.getId());
-        if (itemDto.getName() != null) {
-            if (!itemDto.getName().isBlank())
-                itemToUpdate.setName(itemDto.getName());
+    public Item update(ItemCommentInfoDto itemCommentInfoDto) {
+        Item itemToUpdate = itemBase.get(itemCommentInfoDto.getId());
+        if (itemCommentInfoDto.getName() != null) {
+            if (!itemCommentInfoDto.getName().isBlank())
+                itemToUpdate.setName(itemCommentInfoDto.getName());
         }
-        if (itemDto.getDescription() != null) {
-            if (!itemDto.getDescription().isBlank())
-                itemToUpdate.setDescription(itemDto.getDescription());
+        if (itemCommentInfoDto.getDescription() != null) {
+            if (!itemCommentInfoDto.getDescription().isBlank())
+                itemToUpdate.setDescription(itemCommentInfoDto.getDescription());
         }
-        if (itemDto.getAvailable() != null) {
-            itemToUpdate.setAvailable(itemDto.getAvailable());
+        if (itemCommentInfoDto.getAvailable() != null) {
+            itemToUpdate.setAvailable(itemCommentInfoDto.getAvailable());
         }
         itemBase.put(itemToUpdate.getId(), itemToUpdate);
         return itemToUpdate;

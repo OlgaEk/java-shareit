@@ -1,10 +1,12 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
-import ru.practicum.shareit.booking.dto.BookingBasicDataDto;
 
+/**
+ * // This class describes the entity of Item (id and name), that returns to users
+ */
 @Data
-public class ItemInfoDto extends ItemDto {
-    private BookingBasicDataDto lastBooking;
-    private BookingBasicDataDto nextBooking;
+public class ItemInfoDto {
+    private Long id;
+    private String name;
 }

@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.controller.State;
@@ -65,51 +66,51 @@ public class BookingServiceImpl implements BookingService {
         else throw new AccessNotAllowed("User id = " + userId + " is not allowed to get this booking");
     }
 
-    public List<BookingResponseDto> getAllByBooker(Long userId, String state) {
+    public List<BookingResponseDto> getAllByBooker(Long userId, String state, Pageable pageable) {
         State currentState = convertToState(state);
         switch (currentState) {
             case ALL:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllByBookerIdOrderByStartDesc(userId));
+                        bookingRepository.findAllByBookerIdOrderByStartDesc(userId, pageable));
             case WAITING:
             case REJECTED:
                 return bookingMapper.bookingsToResponse(
                         bookingRepository.findAllByBookerIdAndStatus(userId,
-                                BookingStatus.valueOf(currentState.toString())));
+                                BookingStatus.valueOf(currentState.toString()), pageable));
             case CURRENT:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllCurrentByBookerId(userId, LocalDateTime.now()));
+                        bookingRepository.findAllCurrentByBookerId(userId, LocalDateTime.now(), pageable));
             case PAST:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllPastByBookerId(userId, LocalDateTime.now()));
+                        bookingRepository.findAllPastByBookerId(userId, LocalDateTime.now(), pageable));
             case FUTURE:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllFutureByBookerId(userId, LocalDateTime.now()));
+                        bookingRepository.findAllFutureByBookerId(userId, LocalDateTime.now(), pageable));
             default:
                 throw new NotValidRequestException("State is not use");
         }
     }
 
-    public List<BookingResponseDto> getAllByOwner(Long userId, String state) {
+    public List<BookingResponseDto> getAllByOwner(Long userId, String state, Pageable pageable) {
         State currentState = convertToState(state);
         switch (currentState) {
             case ALL:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllByItemOwnerIdOrderByStartDesc(userId));
+                        bookingRepository.findAllByItemOwnerIdOrderByStartDesc(userId, pageable));
             case WAITING:
             case REJECTED:
                 return bookingMapper.bookingsToResponse(
                         bookingRepository.findAllByItemOwnerIdAndStatus(userId,
-                                BookingStatus.valueOf(currentState.toString())));
+                                BookingStatus.valueOf(currentState.toString()), pageable));
             case CURRENT:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllCurrentByItemOwnerId(userId, LocalDateTime.now()));
+                        bookingRepository.findAllCurrentByItemOwnerId(userId, LocalDateTime.now(), pageable));
             case PAST:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllPastByItemOwnerId(userId, LocalDateTime.now()));
+                        bookingRepository.findAllPastByItemOwnerId(userId, LocalDateTime.now(), pageable));
             case FUTURE:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllFutureByItemOwnerId(userId, LocalDateTime.now()));
+                        bookingRepository.findAllFutureByItemOwnerId(userId, LocalDateTime.now(), pageable));
             default:
                 throw new NotValidRequestException("State is not use");
         }

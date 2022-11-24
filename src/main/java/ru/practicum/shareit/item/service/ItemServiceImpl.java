@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.storage.BookingRepository;
 import ru.practicum.shareit.exception.AccessNotAllowed;
@@ -11,6 +12,7 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.CommentRepository;
 import ru.practicum.shareit.item.storage.ItemRepository;
+import ru.practicum.shareit.requests.storage.ItemRequestRepository;
 import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.time.LocalDateTime;
@@ -28,9 +30,10 @@ public class ItemServiceImpl implements ItemService {
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
     private final ItemMapper itemMapper;
+    private final ItemRequestRepository requestRepository;
 
-    public ItemDto create(Long userId, ItemDto itemDto) {
-        Item item = itemMapper.dtoToItem(itemDto);
+    public ItemCommentInfoDto create(Long userId, ItemCommentInfoDto itemCommentInfoDto) {
+        Item item = itemMapper.dtoToItem(itemCommentInfoDto);
         item.setOwner(userRepository.findById(userId).orElseThrow(() -> new NoEntityException("User is not found")));
         return itemMapper.itemToDto(itemRepository.save(item));
     }
@@ -39,36 +42,36 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.deleteById(id);
     }
 
-    public ItemDto update(Long userId, Long itemId, ItemDto itemDto) {
+    public ItemCommentInfoDto update(Long userId, Long itemId, ItemCommentInfoDto itemCommentInfoDto) {
         Item itemToUpdate = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NoEntityException("Item is not found"));
         if (!Objects.equals(itemToUpdate.getOwner().getId(), userId))
             throw new AccessNotAllowed("User id = " + userId + "is not owner");
-        setNewData(itemDto, itemToUpdate);
+        setNewData(itemCommentInfoDto, itemToUpdate);
         return itemMapper.itemToDto(itemRepository.saveAndFlush(itemToUpdate));
     }
 
-    public ItemDto getById(Long userId, Long itemId) {
+    public ItemCommentInfoDto getById(Long userId, Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new NoEntityException("Item is not found"));
-        if (Objects.equals(item.getOwner().getId(), userId)) return itemMapper.itemToInfoDto(item);
+        if (Objects.equals(item.getOwner().getId(), userId)) return itemMapper.itemToBookInfoDto(item);
         else {
-            ItemInfoDto itemInfoDto = itemMapper.itemToInfoDto(item);
-            itemInfoDto.setLastBooking(null);
-            itemInfoDto.setNextBooking(null);
-            return itemInfoDto;
+            ItemBookInfoDto itemBookInfoDto = itemMapper.itemToBookInfoDto(item);
+            itemBookInfoDto.setLastBooking(null);
+            itemBookInfoDto.setNextBooking(null);
+            return itemBookInfoDto;
         }
     }
 
-    public List<ItemDto> getByUser(Long id) {
-        return itemRepository.findByOwnerIdOrderByIdAsc(id).stream()
-                .map(itemMapper::itemToInfoDto)
+    public List<ItemCommentInfoDto> getByUser(Long id, Pageable pageable) {
+        return itemRepository.findByOwnerIdOrderByIdAsc(id, pageable).stream()
+                .map(itemMapper::itemToBookInfoDto)
                 .collect(Collectors.toList());
     }
 
-    public List<ItemDto> search(String text) {
+    public List<ItemCommentInfoDto> search(String text, Pageable pageable) {
         if (text.isEmpty()) return new ArrayList<>();
         text = text.toLowerCase();
-        return itemRepository.findByNameAndDescription(text).stream()
+        return itemRepository.findByNameAndDescription(text, pageable).stream()
                 .map(itemMapper::itemToDto).collect(Collectors.toList());
 
     }
@@ -89,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
         return commentMapper.commentsToDto(commentRepository.findAllByItemId(itemId));
     }
 
-    private void setNewData(ItemDto itemFrom, Item itemTo) {
+    private void setNewData(ItemCommentInfoDto itemFrom, Item itemTo) {
         if (itemFrom.getName() != null) {
             if (!itemFrom.getName().isBlank())
                 itemTo.setName(itemFrom.getName());
