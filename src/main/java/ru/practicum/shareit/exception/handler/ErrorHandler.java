@@ -23,8 +23,6 @@ public class ErrorHandler {
             MethodArgumentNotValidException e) {
         log.error("Input data  is not valid. Error:{}. Stack trace :", e.getFieldError().getDefaultMessage());
         e.printStackTrace();
-        //Добавила логгирование с выводом стейктрейса. Правильно я поняла задание?
-        //Но существенно лучше в поиске причин неправильной работы не стало. Или я что-то не понимаю?
         return new ErrorResponse(e.getFieldError().getDefaultMessage());
     }
 

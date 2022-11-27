@@ -27,8 +27,6 @@ public class Booking {
     @ManyToOne(optional = false)
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
-    //    Разобралась. Почитала про связь, удивилась, что программа прошла проверки,
-//    так как явно создавались не один запрос к вещи и база данных должна была выдать исключение.
     @ManyToOne(optional = false)
     @JoinColumn(name = "booker_id", nullable = false)
     private User booker;

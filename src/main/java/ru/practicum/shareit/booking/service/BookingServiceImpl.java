@@ -49,7 +49,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NoEntityException("Booking is not found"));
         if (!Objects.equals(booking.getItem().getOwner().getId(), userId))
-            throw new AccessNotAllowed("User id = " + userId + "is not owner of booking item");
+            throw new AccessNotAllowed("User id = " + userId + " is not owner of booking item");
         if (booking.getStatus() == BookingStatus.WAITING) {
             if (approved) booking.setStatus(BookingStatus.APPROVED);
             else booking.setStatus(BookingStatus.REJECTED);
@@ -89,6 +89,7 @@ public class BookingServiceImpl implements BookingService {
             default:
                 throw new NotValidRequestException("State is not use");
         }
+
     }
 
     public List<BookingResponseDto> getAllByOwner(Long userId, String state, Pageable pageable) {

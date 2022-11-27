@@ -38,7 +38,8 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     public List<ItemRequestDto> getAll(Long userId, Pageable pageable) {
-        return requestMapper.requestsToDto(requestRepository.findAllByRequesterIdNotOrderByCreatedAsc(userId, pageable));
+        return requestMapper
+                .requestsToDto(requestRepository.findAllByRequesterIdNotOrderByCreatedDesc(userId, pageable));
     }
 
     @Override
