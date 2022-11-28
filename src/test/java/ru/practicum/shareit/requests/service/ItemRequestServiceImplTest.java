@@ -50,13 +50,13 @@ class ItemRequestServiceImplTest {
 
         ItemRequestDto requestDto = requestService.create(1L, new ItemRequestDto());
         assertNotNull(requestDto);
-        assertEquals(1L,requestDto.getId());
-        assertThrows(NoEntityException.class, ()->requestService.create(2L, new ItemRequestDto()));
+        assertEquals(1L, requestDto.getId());
+        assertThrows(NoEntityException.class, () -> requestService.create(2L, new ItemRequestDto()));
 
         verify(mapper).requestToDto(any());
         verify(requestRepository).save(any());
         verify(userRepository).findById(1l);
-        verify(mapper,times(2)).dtoToRequest(any());
+        verify(mapper, times(2)).dtoToRequest(any());
         verify(userRepository).findById(2l);
 
         verifyNoMoreInteractions(requestRepository);
@@ -68,12 +68,12 @@ class ItemRequestServiceImplTest {
 
     @Test
     void shouldGetAllRequestAndAllRequestByUser() {
-        PageRequest pageable = PageRequest.of(1,1);
+        PageRequest pageable = PageRequest.of(1, 1);
         when(requestRepository.findAllByRequesterIdNotOrderByCreatedDesc(1l, pageable))
                 .thenReturn(List.of(new ItemRequest(), new ItemRequest()));
         when(requestRepository.findAllByRequesterIdOrderByIdAsc(1l))
                 .thenReturn(List.of(new ItemRequest(), new ItemRequest()));
-        requestService.getAll(1l,pageable);
+        requestService.getAll(1l, pageable);
         requestService.getByUser(1l);
         verify(requestRepository).findAllByRequesterIdNotOrderByCreatedDesc(1l, pageable);
         verify(requestRepository).findAllByRequesterIdOrderByIdAsc(1l);
@@ -85,7 +85,7 @@ class ItemRequestServiceImplTest {
         when(requestRepository.findById(1L)).thenReturn(Optional.of(new ItemRequest()));
         requestService.get(1L);
         verify(requestRepository).findById(1L);
-        assertThrows(NoEntityException.class, ()->requestService.get(2L));
+        assertThrows(NoEntityException.class, () -> requestService.get(2L));
         verify(requestRepository).findById(2L);
         verifyNoMoreInteractions(requestRepository);
     }

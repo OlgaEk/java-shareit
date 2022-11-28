@@ -27,7 +27,6 @@ public class User {
 
     @NotNull(message = "The email must be not empty", groups = Create.class)
     @NotBlank(message = "The email must be not empty", groups = Create.class)
-    //@UniqueEmail(groups = Create.class)
     @Email(message = "Email address not valid", groups = {Create.class, Update.class})
     private String email;
 }

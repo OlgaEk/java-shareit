@@ -46,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
         Item itemToUpdate = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NoEntityException("Item is not found"));
         if (!Objects.equals(itemToUpdate.getOwner().getId(), userId))
-            throw new AccessNotAllowed("User id = " + userId + "is not owner");
+            throw new AccessNotAllowed("User id = " + userId + " is not owner");
         setNewData(itemCommentInfoDto, itemToUpdate);
         return itemMapper.itemToDto(itemRepository.saveAndFlush(itemToUpdate));
     }

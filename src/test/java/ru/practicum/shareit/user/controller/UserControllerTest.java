@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.shareit.booking.controller.BookingController;
 import ru.practicum.shareit.user.controller.validator.UserIdExistValidator;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
@@ -20,8 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -30,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
 class UserControllerTest {
+    User user;
+    UserIdExistValidator validator;
     @MockBean
     private UserService userService;
     @MockBean
@@ -38,10 +39,6 @@ class UserControllerTest {
     private MockMvc mvc;
     @Autowired
     private ObjectMapper mapper;
-
-    User user;
-    UserIdExistValidator validator;
-
 
     @BeforeEach
     void setUp() {
@@ -54,7 +51,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldCreateUser() throws  Exception {
+    void ShouldCreateUser() throws Exception {
         when(userService.create(any(User.class))).thenReturn(user);
         mvc.perform(post("/users")
                         .content(mapper.writeValueAsString(user))
@@ -73,6 +70,7 @@ class UserControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
     @Test
     void shouldReturnNotFoundIfUserNotFound() throws Exception {
         mvc.perform(delete("/users/1")
@@ -84,7 +82,7 @@ class UserControllerTest {
     @Test
     void shouldUpdateUser() throws Exception {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
-        when(userService.update(anyLong(),any(User.class))).thenReturn(user);
+        when(userService.update(anyLong(), any(User.class))).thenReturn(user);
         mvc.perform(patch("/users/1")
                         .content(mapper.writeValueAsString(user))
                         .characterEncoding(StandardCharsets.UTF_8).contentType(MediaType.APPLICATION_JSON)

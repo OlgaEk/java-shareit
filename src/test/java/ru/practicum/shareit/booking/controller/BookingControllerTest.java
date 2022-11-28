@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,23 +17,19 @@ import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.booking.storage.BookingRepository;
 import ru.practicum.shareit.item.controller.validator.ItemAvailableValidator;
-import ru.practicum.shareit.item.dto.ItemRequestInfoDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemRepository;
-import ru.practicum.shareit.requests.controller.ItemRequestController;
 import ru.practicum.shareit.user.controller.validator.UserIdExistValidator;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.UserDto;
 import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,6 +39,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BookingController.class)
 @AutoConfigureMockMvc
 class BookingControllerTest {
+    BookingRequestDto bookingInputDto;
+    BookingResponseDto bookingOutputDto;
+    UserDto user;
+    Item item;
     @MockBean
     private BookingService bookingService;
     @MockBean
@@ -52,17 +51,10 @@ class BookingControllerTest {
     private UserRepository userRepository;
     @MockBean
     private BookingRepository bookingRepository;
-
     @Autowired
     private MockMvc mvc;
     @Autowired
     private ObjectMapper mapper;
-
-    BookingRequestDto bookingInputDto;
-    BookingResponseDto bookingOutputDto;
-    UserDto user;
-    Item item;
-
     private ItemAvailableValidator itemValidator;
     private UserIdExistValidator userValidator;
 
