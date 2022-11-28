@@ -43,7 +43,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void ShouldCreateUser() {
+    void shouldCreateUser() {
         when(userRepository.save(any(User.class))).thenReturn(user);
         User result = userService.create(user);
         assertNotNull(result);

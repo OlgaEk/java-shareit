@@ -54,7 +54,7 @@ class ItemRequestControllerTest {
     void setUp() {
         validator = new UserIdExistValidator(userRepository);
         item = new ItemRequestInfoDto();
-        item.setId(1l);
+        item.setId(1L);
         item.setName("test");
         item.setDescription("test");
         item.setAvailable(true);
@@ -73,7 +73,7 @@ class ItemRequestControllerTest {
 
     @Test
     void shouldCreateRequest() throws Exception {
-        when(requestService.create(1l, requestDtoInput)).thenReturn(requestDtoOutput);
+        when(requestService.create(1L, requestDtoInput)).thenReturn(requestDtoOutput);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
 
         mvc.perform(post("/requests")
@@ -111,7 +111,7 @@ class ItemRequestControllerTest {
 
     @Test
     void shouldGetRequests() throws Exception {
-        when(requestService.getByUser(1l)).thenReturn(List.of(requestDtoOutput));
+        when(requestService.getByUser(1L)).thenReturn(List.of(requestDtoOutput));
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
 
         mvc.perform(get("/requests")
@@ -126,7 +126,7 @@ class ItemRequestControllerTest {
                         is(requestDtoOutput.getItems().get(0)), ItemRequestInfoDto.class));
 
         PageRequest pageable = PageRequest.of(0, 10);
-        when(requestService.getAll(1l, pageable)).thenReturn(List.of(requestDtoOutput));
+        when(requestService.getAll(1L, pageable)).thenReturn(List.of(requestDtoOutput));
         mvc.perform(get("/requests/all")
                         .header("X-Sharer-User-Id", 1L)
                         .content(mapper.writeValueAsString(requestDtoInput))
@@ -138,7 +138,7 @@ class ItemRequestControllerTest {
                 .andExpect(jsonPath("$[0].items[0]",
                         is(requestDtoOutput.getItems().get(0)), ItemRequestInfoDto.class));
 
-        when(requestService.get(1l)).thenReturn(requestDtoOutput);
+        when(requestService.get(1L)).thenReturn(requestDtoOutput);
         when(requestRepository.findById(anyLong())).thenReturn(Optional.of(new ItemRequest()));
 
 

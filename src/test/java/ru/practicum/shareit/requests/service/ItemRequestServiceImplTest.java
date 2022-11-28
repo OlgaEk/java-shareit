@@ -55,9 +55,9 @@ class ItemRequestServiceImplTest {
 
         verify(mapper).requestToDto(any());
         verify(requestRepository).save(any());
-        verify(userRepository).findById(1l);
+        verify(userRepository).findById(1L);
         verify(mapper, times(2)).dtoToRequest(any());
-        verify(userRepository).findById(2l);
+        verify(userRepository).findById(2L);
 
         verifyNoMoreInteractions(requestRepository);
         verifyNoMoreInteractions(mapper);
@@ -69,14 +69,14 @@ class ItemRequestServiceImplTest {
     @Test
     void shouldGetAllRequestAndAllRequestByUser() {
         PageRequest pageable = PageRequest.of(1, 1);
-        when(requestRepository.findAllByRequesterIdNotOrderByCreatedDesc(1l, pageable))
+        when(requestRepository.findAllByRequesterIdNotOrderByCreatedDesc(1L, pageable))
                 .thenReturn(List.of(new ItemRequest(), new ItemRequest()));
-        when(requestRepository.findAllByRequesterIdOrderByIdAsc(1l))
+        when(requestRepository.findAllByRequesterIdOrderByIdAsc(1L))
                 .thenReturn(List.of(new ItemRequest(), new ItemRequest()));
-        requestService.getAll(1l, pageable);
-        requestService.getByUser(1l);
-        verify(requestRepository).findAllByRequesterIdNotOrderByCreatedDesc(1l, pageable);
-        verify(requestRepository).findAllByRequesterIdOrderByIdAsc(1l);
+        requestService.getAll(1L, pageable);
+        requestService.getByUser(1L);
+        verify(requestRepository).findAllByRequesterIdNotOrderByCreatedDesc(1L, pageable);
+        verify(requestRepository).findAllByRequesterIdOrderByIdAsc(1L);
         verifyNoMoreInteractions(requestRepository);
     }
 

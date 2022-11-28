@@ -51,7 +51,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldCreateUser() throws Exception {
+    void shouldCreateUser() throws Exception {
         when(userService.create(any(User.class))).thenReturn(user);
         mvc.perform(post("/users")
                         .content(mapper.writeValueAsString(user))

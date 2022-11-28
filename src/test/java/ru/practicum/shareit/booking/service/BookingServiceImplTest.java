@@ -103,7 +103,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void ShouldCreateBooking() {
+    void shouldCreateBooking() {
         when(bookRepository.save(any())).thenReturn(bookingResult);
         when(bookMapper.requestDtoToBooking(any())).thenReturn(booking);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user1));
@@ -142,7 +142,7 @@ class BookingServiceImplTest {
         item.setOwner(user1);
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
         AccessNotAllowed exAccept = assertThrows(AccessNotAllowed.class,
-                () -> bookingService.create(1l, bookInDto));
+                () -> bookingService.create(1L, bookInDto));
         assertEquals("Error: booker is owner of Item", exAccept.getMessage());
 
         verify(bookMapper, times(3)).requestDtoToBooking(any());

@@ -74,13 +74,13 @@ class ItemServiceImplTest {
         itemBookDto.setId(1L);
 
         comment = new CommentDto();
-        comment.setId(1l);
+        comment.setId(1L);
         comment.setText("text");
         comment.setAuthorName("Name");
         comment.setCreated(LocalDateTime.now());
 
         user = new User();
-        user.setId(1l);
+        user.setId(1L);
 
 
         item = new Item();
@@ -127,7 +127,7 @@ class ItemServiceImplTest {
 
     @Test
     void shouldDeleteItem() {
-        itemService.delete(1l);
+        itemService.delete(1L);
     }
 
     @Test
@@ -290,7 +290,7 @@ class ItemServiceImplTest {
     void shouldGetCommentsByItem() {
         when(commentMapper.commentsToDto(any())).thenReturn(List.of(comment));
         when(commentRepository.findAllByItemId(anyLong())).thenReturn(List.of(new Comment()));
-        List<CommentDto> result = itemService.getCommentsByItem(1l);
+        List<CommentDto> result = itemService.getCommentsByItem(1L);
         assertNotNull(result);
         assertEquals(1L, result.get(0).getId());
 

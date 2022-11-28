@@ -59,12 +59,12 @@ public class ItemRequestRepositoryTest {
         em.persist(requestUser3);
 
 
-        List<ItemRequest> result = repository.findAllByRequesterIdNotOrderByCreatedDesc(1l, pageable);
+        List<ItemRequest> result = repository.findAllByRequesterIdNotOrderByCreatedDesc(1L, pageable);
         assertAll(
                 () -> assertEquals(2, result.size()),
                 () -> assertEquals(user3.getId(), result.get(0).getRequester().getId()),
                 () -> assertEquals(user2.getId(), result.get(1).getRequester().getId()),
-                () -> assertEquals(3l, result.get(0).getId()),
+                () -> assertEquals(3L, result.get(0).getId()),
                 () -> assertEquals(requestUser3.getDescription(), result.get(0).getDescription()),
                 () -> assertEquals(requestUser3.getCreated(), result.get(0).getCreated()),
                 () -> assertEquals(requestUser3.getItemsOnRequest(), result.get(0).getItemsOnRequest())
