@@ -21,7 +21,7 @@ import java.util.List;
 public class ItemRequest {
     @OneToMany
     @JoinColumn(name = "request_id")
-    List<Item> itemsOnRequest;
+    private List<Item> itemsOnRequest;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

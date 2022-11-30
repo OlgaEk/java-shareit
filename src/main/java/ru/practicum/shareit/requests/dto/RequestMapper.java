@@ -14,5 +14,6 @@ public interface RequestMapper {
     @Mapping(source = "itemsOnRequest", target = "items", qualifiedByName = "itemToRequestInfoDto")
     ItemRequestDto requestToDto(ItemRequest itemRequest);
 
+
     List<ItemRequestDto> requestsToDto(List<ItemRequest> requests);
 }

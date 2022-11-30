@@ -1,11 +1,11 @@
 package ru.practicum.shareit.booking.storage;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,23 +23,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest
 @Transactional
 
-//Я искала решение проблемы, что после тестов база данных не очищается
-// ( использование методов em.remove("someEntity"), em.flush() и em.clear() после каждого метода
-// не решали этой проблемы). И я нашла решение через поднятия контектов
-// (https://stackoverflow.com/questions/41092716/how-to-reset-between-tests).
-// Но как поняла, это решение не очень логично в данных усоовиях. Но пока другого не нашла.
-// И в слэке ничкего лучше не предложили :((
+// Не получается с очисткой БД (причина явно не в очистке).
+// Почему-то при прохождении тестов по одному все прекрасно работает, но когда они следуют друг за другом,
+// БД перестает что-либо возвращать... То есть на все запросы она ничего не возвращает.
+
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class BookingRepositoryTest {
-    User user1;
-    User user2;
-    Item item1;
-    Item item2;
-    Booking booking1;
-    Booking booking2;
-    Booking booking3;
-    PageRequest pageable;
+    private User user1;
+    private User user2;
+    private Item item1;
+    private Item item2;
+    private Booking booking1;
+    private Booking booking2;
+    private Booking booking3;
+    private PageRequest pageable;
     @Autowired
     private TestEntityManager em;
     @Autowired
@@ -92,9 +90,6 @@ public class BookingRepositoryTest {
 
     }
 
-    @AfterEach
-    void endDown() {
-    }
 
     @Test
     void verifyFindAllCurrentByBookerId() {
@@ -103,14 +98,14 @@ public class BookingRepositoryTest {
         em.persist(item1);
         em.persist(booking1);
         em.persist(booking2);
-        List<Booking> result = repository.findAllCurrentByBookerId(2L, LocalDateTime.now(), pageable);
+        Page<Booking> result = repository.findAllCurrentByBookerId(2L, LocalDateTime.now(), pageable);
         assertAll(
-                () -> assertEquals(1, result.size()),
-                () -> assertEquals(user2, result.get(0).getBooker()),
-                () -> assertEquals(booking2, result.get(0)),
-                () -> assertEquals(booking2.getId(), result.get(0).getId()),
-                () -> assertEquals(booking2.getStart(), result.get(0).getStart()),
-                () -> assertEquals(booking2.getEnd(), result.get(0).getEnd())
+                () -> assertEquals(1, result.getContent().size()),
+                () -> assertEquals(user2, result.getContent().get(0).getBooker()),
+                () -> assertEquals(booking2, result.getContent().get(0)),
+                () -> assertEquals(booking2.getId(), result.getContent().get(0).getId()),
+                () -> assertEquals(booking2.getStart(), result.getContent().get(0).getStart()),
+                () -> assertEquals(booking2.getEnd(), result.getContent().get(0).getEnd())
         );
 
 
@@ -124,11 +119,11 @@ public class BookingRepositoryTest {
         em.persist(booking1);
         em.persist(booking2);
         em.persist(booking3);
-        List<Booking> result = repository.findAllPastByBookerId(2L, LocalDateTime.now(), pageable);
+        Page<Booking> result = repository.findAllPastByBookerId(2L, LocalDateTime.now(), pageable);
         assertAll(
-                () -> assertEquals(1, result.size()),
-                () -> assertEquals(user2, result.get(0).getBooker()),
-                () -> assertEquals(booking3, result.get(0))
+                () -> assertEquals(1, result.getContent().size()),
+                () -> assertEquals(user2, result.getContent().get(0).getBooker()),
+                () -> assertEquals(booking3, result.getContent().get(0))
         );
     }
 
@@ -141,11 +136,11 @@ public class BookingRepositoryTest {
         em.persist(booking2);
         em.persist(booking3);
 
-        List<Booking> result = repository.findAllFutureByItemOwnerId(1L, LocalDateTime.now(), pageable);
+        Page<Booking> result = repository.findAllFutureByItemOwnerId(1L, LocalDateTime.now(), pageable);
         assertAll(
-                () -> assertEquals(1, result.size()),
-                () -> assertEquals(user1, result.get(0).getItem().getOwner()),
-                () -> assertEquals(booking1, result.get(0))
+                () -> assertEquals(1, result.getContent().size()),
+                () -> assertEquals(user1, result.getContent().get(0).getItem().getOwner()),
+                () -> assertEquals(booking1, result.getContent().get(0))
         );
     }
 
@@ -158,11 +153,11 @@ public class BookingRepositoryTest {
         em.persist(booking2);
         em.persist(booking3);
 
-        List<Booking> result = repository.findAllByBookerIdAndStatus(2L, BookingStatus.APPROVED, pageable);
+        Page<Booking> result = repository.findAllByBookerIdAndStatus(2L, BookingStatus.APPROVED, pageable);
         assertAll(
-                () -> assertEquals(1, result.size()),
-                () -> assertEquals(user2, result.get(0).getBooker()),
-                () -> assertEquals(booking2, result.get(0))
+                () -> assertEquals(1, result.getContent().size()),
+                () -> assertEquals(user2, result.getContent().get(0).getBooker()),
+                () -> assertEquals(booking2, result.getContent().get(0))
         );
     }
 

@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
 class UserControllerTest {
-    User user;
-    UserIdExistValidator validator;
+    private User user;
+    private UserIdExistValidator validator;
     @MockBean
     private UserService userService;
     @MockBean

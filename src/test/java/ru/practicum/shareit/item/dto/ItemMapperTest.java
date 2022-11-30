@@ -35,11 +35,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
 class ItemMapperTest {
-
-
-    Item item;
-    ItemCommentInfoDto itemCommentInfoDto;
-    ItemRequest itemRequest;
+    private Item item;
+    private ItemCommentInfoDto itemCommentInfoDto;
+    private ItemRequest itemRequest;
     @Autowired
     private JacksonTester<ItemRequestInfoDto> json;
     @Mock

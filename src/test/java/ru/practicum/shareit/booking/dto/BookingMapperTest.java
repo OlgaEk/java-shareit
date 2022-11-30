@@ -22,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BookingMapperTest {
 
     @InjectMocks
-    BookingMapperImpl mapper;
+    private BookingMapperImpl mapper;
 
-    BookingRequestDto bookingRequestDto;
-    Booking booking;
-    User user;
-    Item item;
+    private BookingRequestDto bookingRequestDto;
+    private Booking booking;
+    private User user;
+    private Item item;
 
     @BeforeEach
     void setUp() {
@@ -42,7 +42,6 @@ public class BookingMapperTest {
 
         booking = new Booking();
         booking.setId(1L);
-
 
 
     }

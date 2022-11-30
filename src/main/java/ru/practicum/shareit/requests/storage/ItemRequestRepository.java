@@ -1,5 +1,6 @@
 package ru.practicum.shareit.requests.storage;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.practicum.shareit.requests.model.ItemRequest;
@@ -11,7 +12,7 @@ public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> 
     List<ItemRequest> findAllByRequesterIdOrderByIdAsc(Long userId);
 
 
-    List<ItemRequest> findAllByOrderByCreatedAsc(Pageable pageable);
+    Page<ItemRequest> findAllByOrderByCreatedAsc(Pageable pageable);
 
-    List<ItemRequest> findAllByRequesterIdNotOrderByCreatedDesc(Long userId, Pageable pageable);
+    Page<ItemRequest> findAllByRequesterIdNotOrderByCreatedDesc(Long userId, Pageable pageable);
 }

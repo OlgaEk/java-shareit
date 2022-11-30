@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
 public class CommentMapperTest {
-    CommentDto commentDto;
-    Comment comment;
+    private CommentDto commentDto;
+    private Comment comment;
 
-    User user;
+    private User user;
     @InjectMocks
     private CommentMapperImpl mapper;
 

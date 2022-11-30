@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.exception.NoEntityException;
 import ru.practicum.shareit.requests.dto.ItemRequestDto;
@@ -70,7 +71,7 @@ class ItemRequestServiceImplTest {
     void shouldGetAllRequestAndAllRequestByUser() {
         PageRequest pageable = PageRequest.of(1, 1);
         when(requestRepository.findAllByRequesterIdNotOrderByCreatedDesc(1L, pageable))
-                .thenReturn(List.of(new ItemRequest(), new ItemRequest()));
+                .thenReturn(new PageImpl<>(List.of(new ItemRequest(), new ItemRequest())));
         when(requestRepository.findAllByRequesterIdOrderByIdAsc(1L))
                 .thenReturn(List.of(new ItemRequest(), new ItemRequest()));
         requestService.getAll(1L, pageable);

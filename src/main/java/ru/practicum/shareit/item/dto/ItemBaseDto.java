@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
-//import ru.practicum.shareit.item.controller.validator.RequestIdExist;
 import ru.practicum.shareit.item.validateGroup.Create;
 
 import javax.validation.constraints.NotBlank;

@@ -24,11 +24,11 @@ import static org.mockito.Mockito.when;
 public class RequestMapperTest {
 
     @InjectMocks
-    RequestMapperImpl mapper;
-    ItemRequestDto itemRequestDto;
-    ItemRequestInfoDto itemRequestInfoDto;
-    ItemRequest itemRequest;
-    Item item;
+    private RequestMapperImpl mapper;
+    private ItemRequestDto itemRequestDto;
+    private ItemRequestInfoDto itemRequestInfoDto;
+    private ItemRequest itemRequest;
+    private Item item;
     @Mock
     private ItemMapper itemMapper;
 

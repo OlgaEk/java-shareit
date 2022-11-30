@@ -39,10 +39,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BookingController.class)
 @AutoConfigureMockMvc
 class BookingControllerTest {
-    BookingRequestDto bookingInputDto;
-    BookingResponseDto bookingOutputDto;
-    UserDto user;
-    Item item;
+    private BookingRequestDto bookingInputDto;
+    private BookingResponseDto bookingOutputDto;
+    private UserDto user;
+    private Item item;
     @MockBean
     private BookingService bookingService;
     @MockBean

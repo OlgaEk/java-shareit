@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ItemRepositoryTest {
     @Autowired
-    ItemRepository repository;
+    private ItemRepository repository;
     @Autowired
     private TestEntityManager em;
 
@@ -55,7 +55,7 @@ public class ItemRepositoryTest {
         em.persist(itemReturnsByName);
         em.persist(itemReturnsByDesc);
 
-        List<Item> result = repository.findByNameAndDescription("a", pageable);
+        List<Item> result = repository.findByNameAndDescription("a", pageable).getContent();
         assertAll(
                 () -> assertEquals(2, result.size()),
                 () -> assertThat(result).contains(itemReturnsByName),

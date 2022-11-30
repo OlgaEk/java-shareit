@@ -71,21 +71,21 @@ public class BookingServiceImpl implements BookingService {
         switch (currentState) {
             case ALL:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllByBookerIdOrderByStartDesc(userId, pageable));
+                        bookingRepository.findAllByBookerIdOrderByStartDesc(userId, pageable).getContent());
             case WAITING:
             case REJECTED:
                 return bookingMapper.bookingsToResponse(
                         bookingRepository.findAllByBookerIdAndStatus(userId,
-                                BookingStatus.valueOf(currentState.toString()), pageable));
+                                BookingStatus.valueOf(currentState.toString()), pageable).getContent());
             case CURRENT:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllCurrentByBookerId(userId, LocalDateTime.now(), pageable));
+                        bookingRepository.findAllCurrentByBookerId(userId, LocalDateTime.now(), pageable).getContent());
             case PAST:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllPastByBookerId(userId, LocalDateTime.now(), pageable));
+                        bookingRepository.findAllPastByBookerId(userId, LocalDateTime.now(), pageable).getContent());
             case FUTURE:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllFutureByBookerId(userId, LocalDateTime.now(), pageable));
+                        bookingRepository.findAllFutureByBookerId(userId, LocalDateTime.now(), pageable).getContent());
             default:
                 throw new NotValidRequestException("State is not use");
         }
@@ -97,21 +97,24 @@ public class BookingServiceImpl implements BookingService {
         switch (currentState) {
             case ALL:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllByItemOwnerIdOrderByStartDesc(userId, pageable));
+                        bookingRepository.findAllByItemOwnerIdOrderByStartDesc(userId, pageable).getContent());
             case WAITING:
             case REJECTED:
                 return bookingMapper.bookingsToResponse(
                         bookingRepository.findAllByItemOwnerIdAndStatus(userId,
-                                BookingStatus.valueOf(currentState.toString()), pageable));
+                                BookingStatus.valueOf(currentState.toString()), pageable).getContent());
             case CURRENT:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllCurrentByItemOwnerId(userId, LocalDateTime.now(), pageable));
+                        bookingRepository.findAllCurrentByItemOwnerId(userId, LocalDateTime.now(), pageable)
+                                .getContent());
             case PAST:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllPastByItemOwnerId(userId, LocalDateTime.now(), pageable));
+                        bookingRepository.findAllPastByItemOwnerId(userId, LocalDateTime.now(), pageable)
+                                .getContent());
             case FUTURE:
                 return bookingMapper.bookingsToResponse(
-                        bookingRepository.findAllFutureByItemOwnerId(userId, LocalDateTime.now(), pageable));
+                        bookingRepository.findAllFutureByItemOwnerId(userId, LocalDateTime.now(), pageable)
+                                .getContent());
             default:
                 throw new NotValidRequestException("State is not use");
         }

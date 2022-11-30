@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    public final CommentMapper commentMapper;
+    private final CommentMapper commentMapper;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
@@ -71,8 +71,9 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemCommentInfoDto> search(String text, Pageable pageable) {
         if (text.isEmpty()) return new ArrayList<>();
         text = text.toLowerCase();
-        return itemRepository.findByNameAndDescription(text, pageable).stream()
-                .map(itemMapper::itemToDto).collect(Collectors.toList());
+        return itemRepository.findByNameAndDescription(text, pageable).getContent().stream()
+                .map(itemMapper::itemToDto)
+                .collect(Collectors.toList());
 
     }
 

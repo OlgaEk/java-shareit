@@ -1,7 +1,6 @@
 package ru.practicum.shareit.requests.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NoEntityException;
@@ -16,7 +15,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository requestRepository;
     private final RequestMapper requestMapper;
@@ -39,7 +37,8 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     public List<ItemRequestDto> getAll(Long userId, Pageable pageable) {
         return requestMapper
-                .requestsToDto(requestRepository.findAllByRequesterIdNotOrderByCreatedDesc(userId, pageable));
+                .requestsToDto(requestRepository.findAllByRequesterIdNotOrderByCreatedDesc(userId, pageable)
+                        .getContent());
     }
 
     @Override

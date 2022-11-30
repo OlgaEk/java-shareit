@@ -37,9 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ItemControllerTest {
 
-    ItemCommentInfoDto itemInDto;
-    CommentDto commentDto;
-    PageRequest pageable;
+    private ItemCommentInfoDto itemInDto;
+    private CommentDto commentDto;
+    private PageRequest pageable;
     @MockBean
     private ItemService itemService;
     @MockBean

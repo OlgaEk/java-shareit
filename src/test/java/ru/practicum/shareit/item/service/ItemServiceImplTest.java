@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.storage.BookingRepository;
@@ -36,30 +37,30 @@ import static org.mockito.Mockito.*;
 class ItemServiceImplTest {
 
     @Mock
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Mock
-    BookingRepository bookingRepository;
+    private BookingRepository bookingRepository;
     @Mock
-    CommentMapper commentMapper;
+    private CommentMapper commentMapper;
     @Mock
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
 
     @Mock
-    ItemMapper itemMapper;
+    private ItemMapper itemMapper;
 
     @InjectMocks
-    ItemServiceImpl itemService;
+    private ItemServiceImpl itemService;
 
-    ItemCommentInfoDto itemInputDto;
-    ItemBookInfoDto itemBookDto;
-    Item item;
-    User user;
+    private ItemCommentInfoDto itemInputDto;
+    private ItemBookInfoDto itemBookDto;
+    private Item item;
+    private User user;
 
-    CommentDto comment;
+    private CommentDto comment;
 
-    PageRequest pageable;
+    private PageRequest pageable;
 
 
     @BeforeEach
@@ -195,7 +196,8 @@ class ItemServiceImplTest {
 
     @Test
     void shouldGetItemsByUser() {
-        when(itemRepository.findByOwnerIdOrderByIdAsc(1L, pageable)).thenReturn(List.of(new Item()));
+        when(itemRepository.findByOwnerIdOrderByIdAsc(1L, pageable))
+                .thenReturn(new PageImpl<>(List.of(new Item())));
         when(itemMapper.itemToBookInfoDto(any())).thenReturn(itemBookDto);
         List<ItemCommentInfoDto> result = itemService.getByUser(1L, pageable);
         assertNotNull(result);
@@ -210,7 +212,8 @@ class ItemServiceImplTest {
 
     @Test
     void shouldSearchItems() {
-        when(itemRepository.findByNameAndDescription("text", pageable)).thenReturn(List.of(new Item()));
+        when(itemRepository.findByNameAndDescription("text", pageable))
+                .thenReturn(new PageImpl<>(List.of(new Item())));
         when(itemMapper.itemToDto(any())).thenReturn(itemInputDto);
         List<ItemCommentInfoDto> result = itemService.search("", pageable);
         assertEquals(0, result.size());

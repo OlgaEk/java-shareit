@@ -1,6 +1,7 @@
 package ru.practicum.shareit.requests.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
  * // The class handles the user's request in "/requests".
  */
 @Validated
+@Slf4j
 @RestController
 @RequestMapping(path = "/requests")
 @RequiredArgsConstructor
@@ -28,11 +30,13 @@ public class ItemRequestController {
     @PostMapping
     public ItemRequestDto createRequest(@RequestHeader(value = "X-Sharer-User-Id") @UserIdExist Long userId,
                                         @Validated @RequestBody ItemRequestDto itemRequestDto) {
+        log.info("Try to create request. User:{}, Item description:{}", userId, itemRequestDto.getDescription());
         return requestService.create(userId, itemRequestDto);
     }
 
     @GetMapping
     public List<ItemRequestDto> getRequests(@RequestHeader(value = "X-Sharer-User-Id") @UserIdExist Long userId) {
+        log.info("Try to get requests by user. User: {}", userId);
         return requestService.getByUser(userId);
     }
 
@@ -41,6 +45,7 @@ public class ItemRequestController {
                                                @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
         //PageRequest pageRequest = PageRequest.of(from/size, size, Sort.by("created").descending());
+        log.info("Try to get all requests. User:{}. An return a {} items from {}.", userId, size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         return requestService.getAll(userId, pageRequest);
     }
@@ -48,6 +53,7 @@ public class ItemRequestController {
     @GetMapping("/{requestId}")
     public ItemRequestDto getRequest(@RequestHeader(value = "X-Sharer-User-Id") @UserIdExist Long userId,
                                      @PathVariable(required = true) @NotNull @RequestIdExist Long requestId) {
+        log.info("Try to get request. Request:{}", requestId);
         return requestService.get(requestId);
     }
 

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,6 @@ import ru.practicum.shareit.requests.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,15 +59,15 @@ public class ItemRequestRepositoryTest {
         em.persist(requestUser3);
 
 
-        List<ItemRequest> result = repository.findAllByRequesterIdNotOrderByCreatedDesc(1L, pageable);
+        Page<ItemRequest> result = repository.findAllByRequesterIdNotOrderByCreatedDesc(1L, pageable);
         assertAll(
-                () -> assertEquals(2, result.size()),
-                () -> assertEquals(user3.getId(), result.get(0).getRequester().getId()),
-                () -> assertEquals(user2.getId(), result.get(1).getRequester().getId()),
-                () -> assertEquals(3L, result.get(0).getId()),
-                () -> assertEquals(requestUser3.getDescription(), result.get(0).getDescription()),
-                () -> assertEquals(requestUser3.getCreated(), result.get(0).getCreated()),
-                () -> assertEquals(requestUser3.getItemsOnRequest(), result.get(0).getItemsOnRequest())
+                () -> assertEquals(2, result.getContent().size()),
+                () -> assertEquals(user3.getId(), result.getContent().get(0).getRequester().getId()),
+                () -> assertEquals(user2.getId(), result.getContent().get(1).getRequester().getId()),
+                () -> assertEquals(3L, result.getContent().get(0).getId()),
+                () -> assertEquals(requestUser3.getDescription(), result.getContent().get(0).getDescription()),
+                () -> assertEquals(requestUser3.getCreated(), result.getContent().get(0).getCreated()),
+                () -> assertEquals(requestUser3.getItemsOnRequest(), result.getContent().get(0).getItemsOnRequest())
         );
 
 

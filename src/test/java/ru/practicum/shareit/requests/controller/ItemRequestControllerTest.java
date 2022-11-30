@@ -35,11 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ItemRequestControllerTest {
     @MockBean
-    ItemRequestService requestService;
-    ItemRequestDto requestDtoInput;
-    ItemRequestDto requestDtoOutput;
-    ItemRequestInfoDto item;
-    List<ItemRequestInfoDto> items;
+    private ItemRequestService requestService;
+    private ItemRequestDto requestDtoInput;
+    private ItemRequestDto requestDtoOutput;
+    private ItemRequestInfoDto item;
+    private List<ItemRequestInfoDto> items;
     @MockBean
     private UserRepository userRepository;
     @MockBean
