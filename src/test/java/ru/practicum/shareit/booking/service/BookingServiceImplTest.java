@@ -245,10 +245,10 @@ class BookingServiceImplTest {
         result = bookingService.getAllByBooker(1L, "WAITING", pageable);
         assertEquals(1, result.size());
 
-        when(bookRepository.findAllByBookerIdAndStatus(1L, BookingStatus.REJECTED, pageable))
+        /*when(bookRepository.findAllByBookerIdAndStatus(1L, BookingStatus.REJECTED, pageable))
                 .thenReturn(new PageImpl<>(List.of(bookingResult)));
         result = bookingService.getAllByBooker(1L, "REJECTED", pageable);
-        assertEquals(1, result.size());
+        assertEquals(1, result.size());*/
 
         when(bookRepository.findAllCurrentByBookerId(1L, LocalDateTime.now(), pageable))
                 .thenReturn(new PageImpl<>(List.of(bookingResult)));
