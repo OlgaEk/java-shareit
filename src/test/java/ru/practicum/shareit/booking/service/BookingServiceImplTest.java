@@ -253,17 +253,17 @@ class BookingServiceImplTest {
         result = bookingService.getAllByBooker(1L, "REJECTED", pageable);
         assertEquals(1, result.size());
 
-        /*when(bookRepository.findAllCurrentByBookerId(1L, LocalDateTime.now(), pageable))
+        when(bookRepository.findAllCurrentByBookerId(anyLong(), any(LocalDateTime.class), any(PageRequest.class)))
                 .thenReturn(page);
         result = bookingService.getAllByBooker(1L, "CURRENT", pageable);
-        assertEquals(1, result.size());*/
+        assertEquals(1, result.size());
 
-        when(bookRepository.findAllPastByBookerId(1L, LocalDateTime.now(), pageable))
+        when(bookRepository.findAllPastByBookerId(anyLong(), any(LocalDateTime.class), any(PageRequest.class)))
                 .thenReturn(page);
         result = bookingService.getAllByBooker(1L, "PAST", pageable);
         assertEquals(1, result.size());
 
-        when(bookRepository.findAllFutureByBookerId(1L, LocalDateTime.now(), pageable))
+        when(bookRepository.findAllFutureByBookerId(anyLong(), any(LocalDateTime.class), any(PageRequest.class)))
                 .thenReturn(page);
         result = bookingService.getAllByBooker(1L, "FUTURE", pageable);
         assertEquals(1, result.size());
@@ -300,17 +300,17 @@ class BookingServiceImplTest {
         result = bookingService.getAllByOwner(1L, "REJECTED", pageable);
         assertEquals(1, result.size());
 
-        when(bookRepository.findAllCurrentByItemOwnerId(1L, LocalDateTime.now(), pageable))
+        when(bookRepository.findAllCurrentByItemOwnerId(anyLong(), any(LocalDateTime.class), any(PageRequest.class)))
                 .thenReturn(new PageImpl<>(List.of(bookingResult)));
         result = bookingService.getAllByOwner(1L, "CURRENT", pageable);
         assertEquals(1, result.size());
 
-        when(bookRepository.findAllPastByItemOwnerId(1L, LocalDateTime.now(), pageable))
+        when(bookRepository.findAllPastByItemOwnerId(anyLong(), any(LocalDateTime.class), any(PageRequest.class)))
                 .thenReturn(new PageImpl<>(List.of(bookingResult)));
         result = bookingService.getAllByOwner(1L, "PAST", pageable);
         assertEquals(1, result.size());
 
-        when(bookRepository.findAllFutureByItemOwnerId(1L, LocalDateTime.now(), pageable))
+        when(bookRepository.findAllFutureByItemOwnerId(anyLong(), any(LocalDateTime.class), any(PageRequest.class)))
                 .thenReturn(new PageImpl<>(List.of(bookingResult)));
         result = bookingService.getAllByOwner(1L, "FUTURE", pageable);
         assertEquals(1, result.size());
