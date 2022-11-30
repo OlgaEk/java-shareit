@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.booking.dto.BookingBasicDataDto;
@@ -60,6 +61,7 @@ class BookingServiceImplTest {
     private ItemInfoDto itemInfo;
     private BookingBasicDataDto bookBase;
     private PageRequest pageable;
+    private Page<Booking> page;
     @InjectMocks
     private BookingServiceImpl bookingService;
 
@@ -101,6 +103,7 @@ class BookingServiceImplTest {
         bookBase.setBookerId(1L);
 
         pageable = PageRequest.of(0, 10);
+        page = new PageImpl<>(List.of(bookingResult));
     }
 
     @Test
@@ -236,32 +239,32 @@ class BookingServiceImplTest {
         when(bookMapper.bookingsToResponse(any())).thenReturn(List.of(bookOutDto));
 
         when(bookRepository.findAllByBookerIdOrderByStartDesc(1L, pageable))
-                .thenReturn(new PageImpl<>(List.of(bookingResult)));
+                .thenReturn(page);
         List<BookingResponseDto> result = bookingService.getAllByBooker(1L, "ALL", pageable);
         assertEquals(1, result.size());
 
         when(bookRepository.findAllByBookerIdAndStatus(1L, BookingStatus.WAITING, pageable))
-                .thenReturn(new PageImpl<>(List.of(bookingResult)));
+                .thenReturn(page);
         result = bookingService.getAllByBooker(1L, "WAITING", pageable);
         assertEquals(1, result.size());
 
-        /*when(bookRepository.findAllByBookerIdAndStatus(1L, BookingStatus.REJECTED, pageable))
-                .thenReturn(new PageImpl<>(List.of(bookingResult)));
+        when(bookRepository.findAllByBookerIdAndStatus(1L, BookingStatus.REJECTED, pageable))
+                .thenReturn(page);
         result = bookingService.getAllByBooker(1L, "REJECTED", pageable);
-        assertEquals(1, result.size());*/
-
-        when(bookRepository.findAllCurrentByBookerId(1L, LocalDateTime.now(), pageable))
-                .thenReturn(new PageImpl<>(List.of(bookingResult)));
-        result = bookingService.getAllByBooker(1L, "CURRENT", pageable);
         assertEquals(1, result.size());
 
+        /*when(bookRepository.findAllCurrentByBookerId(1L, LocalDateTime.now(), pageable))
+                .thenReturn(page);
+        result = bookingService.getAllByBooker(1L, "CURRENT", pageable);
+        assertEquals(1, result.size());*/
+
         when(bookRepository.findAllPastByBookerId(1L, LocalDateTime.now(), pageable))
-                .thenReturn(new PageImpl<>(List.of(bookingResult)));
+                .thenReturn(page);
         result = bookingService.getAllByBooker(1L, "PAST", pageable);
         assertEquals(1, result.size());
 
         when(bookRepository.findAllFutureByBookerId(1L, LocalDateTime.now(), pageable))
-                .thenReturn(new PageImpl<>(List.of(bookingResult)));
+                .thenReturn(page);
         result = bookingService.getAllByBooker(1L, "FUTURE", pageable);
         assertEquals(1, result.size());
 
