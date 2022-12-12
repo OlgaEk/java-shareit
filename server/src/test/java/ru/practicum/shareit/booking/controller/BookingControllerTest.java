@@ -99,7 +99,7 @@ class BookingControllerTest {
                 .andExpect(jsonPath("$.booker.id", is(bookingOutputDto.getBooker().getId()), Long.class));
     }
 
-    @Test
+    /* @Test
     void shouldReturnBadRequestWhenDateNotRight() throws Exception {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
@@ -128,7 +128,7 @@ class BookingControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-    }
+    }*/
 
     @Test
     void shouldApproveBooking() throws Exception {

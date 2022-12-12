@@ -13,8 +13,6 @@ import ru.practicum.shareit.item.validateGroup.Create;
 import ru.practicum.shareit.item.validateGroup.Update;
 import ru.practicum.shareit.user.controller.validator.UserIdExist;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -46,8 +44,8 @@ public class ItemController {
 
     @GetMapping
     public List<ItemCommentInfoDto> getUserItems(@RequestHeader(value = "X-Sharer-User-Id") @UserIdExist Long userId,
-                                                 @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
-                                                 @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+                                                 @RequestParam(name = "from", defaultValue = "0") int from,
+                                                 @RequestParam(name = "size", defaultValue = "10") int size) {
         log.info("Try to get items by owner. Owner: {}. An return a {} items from {}.", userId, size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         return itemService.getByUser(userId, pageRequest);
@@ -67,8 +65,8 @@ public class ItemController {
     // Я еще попытаюсь у наставника поспрашивать, как можно преобразовать.
     @GetMapping("/search")
     public List<ItemCommentInfoDto> searchItem(@RequestParam String text,
-                                               @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
-                                               @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+                                               @RequestParam(name = "from", defaultValue = "0") int from,
+                                               @RequestParam(name = "size", defaultValue = "10") int size) {
         log.info("Try to search items by text : {} in name or description. An return a {} items from {}.",
                 text, size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);

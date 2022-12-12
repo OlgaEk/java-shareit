@@ -130,20 +130,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     public BookingBasicDataDto getLastBooking(Long itemId) {
-        //Как я заметила на тестах вариант с отбором последнего и ближайшего бронирования работает медленно
-        //Вариант замены:
 
        /* List<Booking> booking = bookingRepository.findAllByItemId(itemId).stream()
                 .filter(b -> b.getEnd().isBefore(LocalDateTime.now()))
                 .sorted(Comparator.comparing(Booking::getEnd).reversed())
                 .collect(Collectors.toList());*/
-
-        //На основе своих знаний, я считаю , что именно База Данных должна выдать готовый результат при запросе данных.
-        // В моем представлении БД обладает функционалом по оптимизации поиска и сортировки.
-        // И запрашивать большой объем и потом самому сортировать и фильтровать
-        // при каждом запросе мне кажется неэффективным.
-        // Но почему-то при выборке из БД мне казалось, что программа медленнее обрабатывала запрос,
-        // нежели при обработке через stream.
 
         List<Booking> booking = bookingRepository.findItemLastBook(itemId, LocalDateTime.now());
         if (booking.isEmpty())
@@ -153,7 +144,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     public BookingBasicDataDto getNextBooking(Long itemId) {
-       /* List<Booking> booking = bookingRepository.findAllByItemId(itemId).stream()
+        /*List<Booking> booking = bookingRepository.findAllByItemId(itemId).stream()
                 .filter(b -> b.getStart().isAfter(LocalDateTime.now()))
                 .sorted(Comparator.comparing(Booking::getStart))
                 .collect(Collectors.toList());*/

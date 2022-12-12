@@ -98,7 +98,7 @@ class ItemRequestControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    /*@Test
     void shouldReturnBadRequestWhenDataNotValid() throws Exception {
         requestDtoInput.setDescription("");
         mvc.perform(post("/requests")
@@ -107,7 +107,7 @@ class ItemRequestControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-    }
+    }*/
 
     @Test
     void shouldGetRequests() throws Exception {

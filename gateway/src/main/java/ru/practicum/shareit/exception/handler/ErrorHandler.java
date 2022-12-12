@@ -6,9 +6,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.exception.AccessNotAllowed;
-import ru.practicum.shareit.exception.AlreadyExistException;
-import ru.practicum.shareit.exception.NoEntityException;
 import ru.practicum.shareit.exception.NotValidRequestException;
 
 import javax.validation.ConstraintViolationException;
@@ -42,27 +39,4 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNoEntityException(final NoEntityException e) {
-        log.error("Entity not found. Error:{}. Stack trace :", e.getMessage());
-        e.printStackTrace();
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleAlreadyExistException(final AlreadyExistException e) {
-        log.error("The data already exist. Error:{}. Stack trace :", e.getMessage());
-        e.printStackTrace();
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleAccessNotAllowedException(final AccessNotAllowed e) {
-        log.error("Access not allowed. Error:{}. Stack trace : ", e.getMessage());
-        e.printStackTrace();
-        return new ErrorResponse(e.getMessage());
-    }
 }

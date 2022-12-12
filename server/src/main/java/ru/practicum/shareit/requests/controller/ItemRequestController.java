@@ -10,9 +10,6 @@ import ru.practicum.shareit.requests.dto.ItemRequestDto;
 import ru.practicum.shareit.requests.service.ItemRequestService;
 import ru.practicum.shareit.user.controller.validator.UserIdExist;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -42,8 +39,8 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public List<ItemRequestDto> getAllRequests(@RequestHeader(value = "X-Sharer-User-Id") @UserIdExist Long userId,
-                                               @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
-                                               @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+                                               @RequestParam(name = "from", defaultValue = "0") int from,
+                                               @RequestParam(name = "size", defaultValue = "10") int size) {
         //PageRequest pageRequest = PageRequest.of(from/size, size, Sort.by("created").descending());
         log.info("Try to get all requests. User:{}. An return a {} items from {}.", userId, size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
@@ -52,7 +49,7 @@ public class ItemRequestController {
 
     @GetMapping("/{requestId}")
     public ItemRequestDto getRequest(@RequestHeader(value = "X-Sharer-User-Id") @UserIdExist Long userId,
-                                     @PathVariable(required = true) @NotNull @RequestIdExist Long requestId) {
+                                     @PathVariable(required = true) @RequestIdExist Long requestId) {
         log.info("Try to get request. Request:{}", requestId);
         return requestService.get(requestId);
     }
